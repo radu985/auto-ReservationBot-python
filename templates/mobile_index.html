@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Guinea-Bissau Visa Booking</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 12px;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e0;
+        }
+        
+        .status-dot.running { background: #48bb78; animation: pulse 2s infinite; }
+        .status-dot.error { background: #f56565; }
+        .status-dot.starting { background: #4299e1; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .status-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+        
+        input[type="text"], input[type="url"], input[type="email"], input[type="password"], input[type="tel"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="tel"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input[type="text"]::placeholder, input[type="url"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder, input[type="tel"]::placeholder {
+            color: #a0aec0;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .option-item:hover {
+            background: #edf2f7;
+            border-color: #e2e8f0;
+        }
+        
+        .option-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+        
+        .option-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .button-section {
+            margin: 32px 0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status-display {
+            margin-top: 24px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border-left: 4px solid #667eea;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Sectioning for mobile wizard */
+        .section { display: block; }
+        .nav-controls { display: none; margin-top: 16px; gap: 8px; }
+        
+        .status-display.success {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+        
+        .status-display.error {
+            border-left-color: #f56565;
+            background: #fff5f5;
+        }
+        
+        .status-display.info {
+            border-left-color: #4299e1;
+            background: #ebf8ff;
+        }
+        
+        .status-message {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .upload-area {
+            position: relative;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #e6f3ff;
+            transform: scale(1.02);
+        }
+        
+        .upload-content {
+            pointer-events: none;
+        }
+        
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .upload-text strong {
+            display: block;
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+        
+        .upload-text span {
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-list {
+            margin-bottom: 16px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .file-icon {
+            font-size: 16px;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .file-size {
+            color: #718096;
+            font-size: 11px;
+        }
+        
+        .remove-file {
+            background: #fed7d7;
+            color: #742a2a;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateY(-100px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+        }
+        
+        .toast.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .toast.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .toast.info {
+            background: #bee3f8;
+            color: #2a4365;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .card {
+                padding: 24px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                font-size: 16px;
+                padding: 16px 20px;
+            }
+            
+            /* On small screens, show a single active section as a wizard */
+            .section { display: none; }
+            .section.active { display: block; }
+            .nav-controls { display: flex; }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 12px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🇬🇼 Guinea-Bissau Visa Booking</div>
+            <div class="subtitle">Automated appointment booking system</div>
+        </div>
+        
+        <div class="card">
+            <!-- Section: Home -->
+            <div id="section-home" class="section active">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <div class="status-text" id="statusText">Ready to start</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">Configuration</div>
+                
+                <div class="form-group">
+                    <label for="url">Start URL (optional)</label>
+                    <input id="url" type="url" placeholder="https://visa.vfsglobal.com/gnb/pt/prt/login" />
+                </div>
+                
+                <div class="options-grid">
+                    <div class="option-item">
+                        <input id="headless" type="checkbox" checked />
+                        <label for="headless" class="option-label">Headless Mode</label>
+                    </div>
+                    <div class="option-item">
+                        <input id="playwright" type="checkbox" checked />
+                        <label for="playwright" class="option-label">Use Playwright</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-section">
+                <button id="toggleBtn" class="btn-primary">Start Bot</button>
+            </div>
+            
+            <div class="status-display" id="statusDisplay">
+                <div class="status-message" id="statusMessage">Ready to start automation</div>
+            </div>
+            </div><!-- /section-home -->
+            
+            <!-- Section: Customer Registration -->
+            <div id="section-registration" class="section">
+            <div class="form-section">
+                <div class="section-title">👤 Customer Registration</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" type="text" placeholder="John" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" type="text" placeholder="Doe" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input id="email" type="email" placeholder="john.doe@example.com" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" placeholder="Enter secure password" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="mobileNumber">Mobile Number</label>
+                    <input id="mobileNumber" type="tel" placeholder="+245 123 456 789" />
+                </div>
+                
+                <button id="registerBtn" class="btn-secondary">Register User</button>
+            </div>
+            </div><!-- /section-registration -->
+            
+            <!-- Section: File Upload -->
+            <div id="section-upload" class="section">
+            <div class="form-section">
+                <div class="section-title">📁 File Upload</div>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">
+                            <strong>Drop files here or click to browse</strong>
+                            <span>Supports images and PDFs</span>
+                        </div>
+                    </div>
+                    <input id="fileUpload" type="file" accept="image/*,.pdf" multiple />
+                </div>
+                
+                <div class="file-list" id="fileList"></div>
+                
+                <button id="uploadBtn" class="btn-secondary">Upload Files</button>
+            </div>
+            </div><!-- /section-upload -->
+
+            <!-- Wizard nav controls (visible on mobile) -->
+            <div class="nav-controls button-group">
+                <button id="prevSection" class="btn-secondary" type="button">Previous</button>
+                <button id="nextSection" class="btn-primary" type="button">Next</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const statusDisplay = document.getElementById('statusDisplay');
+        const statusMessage = document.getElementById('statusMessage');
+        const toast = document.getElementById('toast');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileUpload = document.getElementById('fileUpload');
+        const fileList = document.getElementById('fileList');
+        const sections = ['section-home','section-registration','section-upload'];
+        let currentSectionIndex = 0;
+        const prevBtn = document.getElementById('prevSection');
+        const nextBtn = document.getElementById('nextSection');
+        
+        let isBotRunning = false;
+        let selectedFiles = [];
+        
+        function updateStatus(status, message, type = 'info') {
+            statusDot.className = `status-dot ${status}`;
+            statusText.textContent = message;
+            statusDisplay.className = `status-display ${type}`;
+            statusMessage.textContent = message;
+        }
+        
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+        
+        function setLoading(button, loading) {
+            if (loading) {
+                button.disabled = true;
+                button.innerHTML = '<span class="loading"></span>' + button.textContent;
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.textContent.replace('<span class="loading"></span>', '');
+            }
+        }
+        
+        function showSection(index) {
+            currentSectionIndex = Math.max(0, Math.min(index, sections.length - 1));
+            sections.forEach((id, i) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.toggle('active', i === currentSectionIndex);
+                }
+            });
+            // Enable/disable nav buttons
+            if (prevBtn) prevBtn.disabled = currentSectionIndex === 0;
+            if (nextBtn) nextBtn.disabled = currentSectionIndex === sections.length - 1;
+        }
+        
+        async function apiCall(endpoint, data = {}) {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.error || `HTTP ${response.status}`);
+            }
+            return result;
+        }
+        
+        async function uploadFile(endpoint, formData) {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.error || `HTTP ${response.status}`);
+            }
+            return result;
+        }
+        
+        // Toggle button functionality
+        toggleBtn.addEventListener('click', async () => {
+            try {
+                setLoading(toggleBtn, true);
+                
+                if (!isBotRunning) {
+                    // Start bot
+                    updateStatus('starting', 'Initializing bot...', 'info');
+                    showToast('Starting automation...', 'info');
+                    
+                    const payload = {
+                        headless: document.getElementById('headless').checked,
+                        use_playwright: document.getElementById('playwright').checked,
+                        monitoring_duration: 4,
+                        start_url: document.getElementById('url').value.trim()
+                    };
+                    
+                    const result = await apiCall('/api/start_bot', payload);
+                    
+                    isBotRunning = true;
+                    toggleBtn.textContent = 'Stop Bot';
+                    toggleBtn.className = 'btn-secondary';
+                    updateStatus('running', 'Bot is running', 'success');
+                    showToast('Bot started successfully!', 'success');
+                    
+                } else {
+                    // Stop bot
+                    updateStatus('stopping', 'Stopping bot...', 'info');
+                    showToast('Stopping automation...', 'info');
+                    
+                    const result = await apiCall('/api/stop_bot');
+                    
+                    isBotRunning = false;
+                    toggleBtn.textContent = 'Start Bot';
+                    toggleBtn.className = 'btn-primary';
+                    updateStatus('idle', 'Bot stopped', 'info');
+                    showToast('Bot stopped successfully', 'info');
+                }
+                
+            } catch (error) {
+                updateStatus('error', 'Operation failed', 'error');
+                showToast(`Error: ${error.message}`, 'error');
+                
+                // Reset button state on error
+                isBotRunning = false;
+                toggleBtn.textContent = 'Start Bot';
+                toggleBtn.className = 'btn-primary';
+            } finally {
+                setLoading(toggleBtn, false);
+            }
+        });
+        
+        // Auto-refresh status when running
+        setInterval(async () => {
+            if (statusDot.classList.contains('running')) {
+                try {
+                    const response = await fetch('/api/status');
+                    const data = await response.json();
+                    if (data.message) {
+                        statusMessage.textContent = data.message;
+                    }
+                } catch (error) {
+                    // Silent fail for status updates
+                }
+            }
+        }, 5000);
+        
+        // Register user functionality
+        registerBtn.addEventListener('click', async () => {
+            try {
+                setLoading(registerBtn, true);
+                
+                const userData = {
+                    first_name: document.getElementById('firstName').value.trim(),
+                    last_name: document.getElementById('lastName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    password: document.getElementById('password').value.trim(),
+                    mobile_number: document.getElementById('mobileNumber').value.trim(),
+                    date_of_birth: '01/01/1990', // Default value
+                    mobile_country_code: '245', // Guinea-Bissau code
+                    passport_number: '',
+                    visa_type: '',
+                    application_center: '',
+                    service_center: '',
+                    trip_reason: '',
+                    gender: '',
+                    current_nationality: '',
+                    passport_expiry: ''
+                };
+                
+                if (!userData.first_name || !userData.last_name || !userData.email || !userData.password) {
+                    throw new Error('Please fill in all required fields');
+                }
+                
+                const result = await apiCall('/api/save_client', userData);
+                showToast('User registered successfully!', 'success');
+                
+                // Clear form
+                document.getElementById('firstName').value = '';
+                document.getElementById('lastName').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('mobileNumber').value = '';
+                
+            } catch (error) {
+                showToast(`Registration failed: ${error.message}`, 'error');
+            } finally {
+                setLoading(registerBtn, false);
+            }
+        });
+        
+        // File upload functionality
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function getFileIcon(file) {
+            if (file.type.startsWith('image/')) return '🖼️';
+            if (file.type === 'application/pdf') return '📄';
+            return '📁';
+        }
+        
+        function addFileToList(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <span class="file-icon">${getFileIcon(file)}</span>
+                    <div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                </div>
+                <button class="remove-file" onclick="removeFile('${file.name}')">Remove</button>
+            `;
+            fileList.appendChild(fileItem);
+        }
+        
+        function removeFile(fileName) {
+            selectedFiles = selectedFiles.filter(f => f.name !== fileName);
+            fileUpload.value = '';
+            fileList.innerHTML = '';
+            selectedFiles.forEach(addFileToList);
+        }
+        
+        // File selection handling
+        fileUpload.addEventListener('change', (e) => {
+            selectedFiles = Array.from(e.target.files);
+            fileList.innerHTML = '';
+            selectedFiles.forEach(addFileToList);
+        });
+        
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = Array.from(e.dataTransfer.files);
+            const validFiles = files.filter(file => 
+                file.type.startsWith('image/') || file.type === 'application/pdf'
+            );
+            
+            selectedFiles = [...selectedFiles, ...validFiles];
+            fileList.innerHTML = '';
+            selectedFiles.forEach(addFileToList);
+        });
+        
+        uploadBtn.addEventListener('click', async () => {
+            try {
+                if (selectedFiles.length === 0) {
+                    throw new Error('Please select files to upload');
+                }
+                
+                setLoading(uploadBtn, true);
+                
+                for (const file of selectedFiles) {
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    
+                    const result = await uploadFile('/api/upload_image', formData);
+                    showToast(`File uploaded: ${result.filename}`, 'success');
+                }
+                
+                // Clear files
+                selectedFiles = [];
+                fileUpload.value = '';
+                fileList.innerHTML = '';
+                
+            } catch (error) {
+                showToast(`Upload failed: ${error.message}`, 'error');
+            } finally {
+                setLoading(uploadBtn, false);
+            }
+        });
+        
+        // Initialize
+        updateStatus('idle', 'Ready to start', 'info');
+        // Wire up navigation
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => showSection(currentSectionIndex - 1));
+            nextBtn.addEventListener('click', () => showSection(currentSectionIndex + 1));
+            // Start on Home
+            showSection(0);
+        }
+    </script>
+</body>
+</html>

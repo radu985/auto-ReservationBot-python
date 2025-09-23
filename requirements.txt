@@ -1,0 +1,23 @@
+# Core GUI Framework
+PyQt6>=6.6.0
+
+# Browser Automation
+selenium>=4.23.0
+playwright>=1.46.0
+
+# Image Processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Web Framework
+Flask>=2.3.0
+
+# HTTP Requests
+requests>=2.31.0
+
+# Production Server (optional)
+waitress>=2.1.0
+
+# Development Tools (optional)
+pytest>=7.0.0
